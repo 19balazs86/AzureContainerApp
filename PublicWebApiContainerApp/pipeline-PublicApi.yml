@@ -1,0 +1,103 @@
+﻿# Run number: https://docs.microsoft.com/en-us/azure/devops/pipelines/process/run-number?view=azure-devops&tabs=yaml
+name: "$(BuildDefinitionName)_$(Year:yyyy).$(Month).$(DayOfMonth)_$(Rev:rr)"
+
+trigger: none
+
+pool:
+  vmImage: "ubuntu-latest"
+
+variables:
+  scriptsDir: "AzureContainerApp/scripts"
+  csprojFolder: "AzureContainerApp/PublicWebApiContainerApp"
+  publishFolder: $(Agent.TempDirectory)/publish
+  bicepFileName: 'update-containerApp.bicep'
+
+stages:
+- stage: BuildAndPushDockerImageStage
+  displayName: 'Build and Push docker image'
+
+  jobs:
+  - job: BuildAndPushJob
+    displayName: 'Build and Push'
+
+    steps:
+      # Generate a sily version number like "yy.M.d.BuildId" and it can be used as $(setvarTask.version)
+      - task: PowerShell@2
+        displayName: "Calculate version"
+        name: setvarTask
+        inputs:
+          filePath: "${{variables.scriptsDir}}/CalculateVersion.ps1"
+          arguments: "-buildId $(Build.BuildId)"
+
+      - script: echo $(setvarTask.version)
+        displayName: "Print version"
+
+      - task: DotNetCoreCLI@2
+        displayName: "dotnet publish"
+        inputs:
+          command: "publish"
+          publishWebProjects: false
+          zipAfterPublish: false
+          workingDirectory: "$(csprojFolder)"
+          arguments: "-c Release --output $(publishFolder) -p:UseAppHost=false -p:Version=$(setvarTask.version)"
+
+      # https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/docker-v2
+      - task: Docker@2
+        displayName: Build and Push an image to Azure container registry
+        inputs:
+          command: buildAndPush
+          repository: "PublicWebApiContainerApp" # In ACR this will be the name of the repository
+          dockerfile: $(csprojFolder)/DockerfileDevOps
+          buildContext: $(publishFolder)
+          containerRegistry: "ContainerAppTestACR-Connection"
+          tags: |
+            $(setvarTask.version)
+            latest
+
+      - task: CopyFiles@2
+        displayName: "Copy bicep file"
+        inputs:
+          SourceFolder: $(csprojFolder)
+          TargetFolder: $(Build.ArtifactStagingDirectory)
+          Contents: $(bicepFileName)
+
+      # https://docs.microsoft.com/en-us/azure/devops/pipelines/artifacts/pipeline-artifacts
+      - task: PublishPipelineArtifact@1
+        displayName: "Publish Pipeline Artifacts"
+        inputs:
+          path: "$(Build.ArtifactStagingDirectory)"
+          artifact: "drop"
+
+# Stage -> Deploy
+
+- stage: Deploy
+  condition: eq(variables['Build.Reason'], 'Manual')
+
+  jobs:
+  - deployment: Deploy
+    displayName: "Deploy ContainerApp"
+
+    environment: "Dev"
+
+    variables:
+      version: $[stageDependencies.BuildAndPushDockerImageStage.BuildAndPushJob.outputs['setvarTask.version']]
+      bicepFilePath: "$(Pipeline.Workspace)/drop/$(bicepFileName)"
+
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+
+          #https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/azure-resource-manager-template-deployment-v3
+          - task: AzureResourceManagerTemplateDeployment@3
+            inputs:
+              deploymentScope: 'Resource Group'
+              azureResourceManagerConnection: 'MyAzureSubscription'
+              action: 'Create Or Update Resource Group'
+              resourceGroupName: 'ContainerAppTest-ResGroup'
+              location: 'North Europe'
+              templateLocation: 'Linked artifact'
+              csmFile: '$(bicepFilePath)'
+              overrideParameters: '-imageVersionTag $(version)'
+              deploymentMode: 'Incremental'
+              deploymentName: 'DeployWithBicep'
