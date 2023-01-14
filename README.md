@@ -1,4 +1,4 @@
-# # Playing with Azure Container App
+# Playing with Azure Container App
 To be honest, there is not much in this repository. I experimented with the [Azure Container App](https://learn.microsoft.com/en-us/azure/container-apps/overview) and service invocation using the [Dapr](https://dapr.io/) client.
 
 #### Resources
@@ -15,8 +15,8 @@ To be honest, there is not much in this repository. I experimented with the [Azu
 
 ###### The following services are defined in a bicep file
 
-![Bicep-Visualize-main](images\Bicep-Visualize-main.JPG)
+![Bicep-Visualize-main](images/Bicep-Visualize-main.JPG)
 
 ###### Deployed with Azure DevOps pipeline
 
-![DevOps-Pipeline](images\DevOps-Pipeline.JPG)
+![DevOps-Pipeline](images/DevOps-Pipeline.JPG)
