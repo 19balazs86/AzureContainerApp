@@ -1,5 +1,7 @@
 ﻿param rgLocation string = resourceGroup().location
 
+// https://learn.microsoft.com/en-us/azure/templates/microsoft.containerregistry/registries
+
 resource containerRegistry 'Microsoft.ContainerRegistry/registries@2022-02-01-preview' = {
     name: 'ContainerAppTestACR'
     location: rgLocation
@@ -10,6 +12,8 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2022-02-01-pr
         adminUserEnabled: false
     }
 }
+
+//https://learn.microsoft.com/en-us/azure/templates/microsoft.operationalinsights/workspaces
 
 resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
     name: 'containerapp-log-analytics'
@@ -22,6 +26,8 @@ resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
     }
 }
 
+// https://learn.microsoft.com/en-us/azure/templates/microsoft.insights/components
+
 resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
     name: 'containerapp-appInsights'
     location: rgLocation
@@ -31,6 +37,8 @@ resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
         WorkspaceResourceId: logAnalytics.id
     }
 }
+
+// https://learn.microsoft.com/en-us/azure/templates/microsoft.app/managedenvironments
 
 resource containerAppEnv 'Microsoft.App/managedEnvironments@2022-06-01-preview' = {
     name: 'containerapp-managed-env'
@@ -47,10 +55,7 @@ resource containerAppEnv 'Microsoft.App/managedEnvironments@2022-06-01-preview' 
     }
 }
 
-// https://learn.microsoft.com/en-us/azure/templates/microsoft.app/containerapps?pivots=deployment-language-bicep
-
-// I am using SystemAssigned identity. The container needs to be created with a public image.
-// The pipeline will update it with an image from ARC
+// https://learn.microsoft.com/en-us/azure/templates/microsoft.app/containerapps
 
 resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
     name: 'containerapp-public-api'
@@ -75,12 +80,6 @@ resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
                         cpu: json('0.25')
                         memory: '0.5Gi'
                     }
-                    env: [
-                        {
-                            name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
-                            value: applicationInsights.properties.ConnectionString
-                        }
-                    ]
                 }
             ]
             scale: {
@@ -93,8 +92,10 @@ resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
 
 var acrPullRoleId = '7f951dda-4ed3-4680-a7ca-43fe172d538d'
 
+// https://learn.microsoft.com/en-us/azure/templates/microsoft.authorization/roleassignments
+
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-    name: guid(resourceGroup().id, containerRegistry.id, 'AcrPullSystemAssigned')
+    name: guid(resourceGroup().id, containerApp.id, 'AcrPullSystemAssigned')
     scope: containerRegistry
     properties: {
         principalId: containerApp.identity.principalId
@@ -110,7 +111,7 @@ resource echoContainerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
         managedEnvironmentId: containerAppEnv.id
         configuration: {
             ingress: {
-                external: true
+                external: true // For external testing
                 targetPort: 80
             }
             dapr: {

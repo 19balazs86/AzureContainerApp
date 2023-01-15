@@ -26,6 +26,12 @@ resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
                 external: true
                 targetPort: containerPort
             }
+            dapr: {
+                enabled: true
+                appId: 'public-api'
+                appProtocol: 'http'
+                appPort: containerPort
+            }
             registries: [
                 {
                     server: acrServerAddress

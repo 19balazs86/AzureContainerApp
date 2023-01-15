@@ -11,6 +11,7 @@ To be honest, there is not much in this repository. I experimented with the [Azu
 - [Build and push Docker Images to ARC using DevOps pipelines](https://thomasthornton.cloud/2021/12/16/build-and-push-docker-images-to-azure-container-registry-using-azure-devops-pipelines) 📓*Thomas Thornton (Azure solutions architect)*
 ---
 - [Bicep](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview) 📚*Microsoft-Learn*
+- [Microsoft.App - ContainerApps](https://learn.microsoft.com/en-us/azure/templates/microsoft.app/containerapps?pivots=deployment-language-bicep) 📚*Microsoft-Learn - Bicep template*
 - [Bicep Playground with sample templates](https://bicepdemo.z22.web.core.windows.net)
 
 ###### The following services are defined in a bicep file
