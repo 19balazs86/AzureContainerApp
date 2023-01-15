@@ -1,0 +1,25 @@
+--> Install Dapr cli tool
+https://docs.dapr.io/getting-started/install-dapr-cli
+
+--> Run Dapr Dashboard (default port is 8080)
+dapr dashboard --port 3580
+
+--> Open it in the browser
+http://localhost:3580
+
+--> Start the echo-server in docker
+docker run --name echo-server -p 8888:80 -d mendhak/http-https-echo
+
+--> Start a Dapr instance alone for the echo-server
+dapr run --app-id echo-server --app-port 8888 --dapr-http-port 3588
+
+--> Run both my application and a Dapr sidecar in one process. Execute this command where the file is located: PublicWebApiContainerApp.csproj
+dapr run --app-id api-app --app-port 5100 --dapr-http-port 3500 -- dotnet run --urls "http://localhost:5100"
+
+--> Actually it loads the swagger page, but the say-hello request is not working
+http://localhost:3500/v1.0/invoke/api-app/method/swagger
+
+--> Open the web-api application in the browser and send say-hello request
+http://localhost:5100
+
+--> PublicWebApiContainerApp can be run and debug from Visual Studio and the request works
