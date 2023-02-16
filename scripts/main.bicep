@@ -93,6 +93,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
 var acrPullRoleId = '7f951dda-4ed3-4680-a7ca-43fe172d538d'
 
 // https://learn.microsoft.com/en-us/azure/templates/microsoft.authorization/roleassignments
+// https://yourazurecoach.com/2023/02/02/my-developer-friendly-bicep-module-for-role-assignments
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
     name: guid(resourceGroup().id, containerApp.id, 'AcrPullSystemAssigned')
