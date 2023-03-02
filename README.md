@@ -15,6 +15,7 @@ Actually, there is not much code in this repository. I experimented with the [Az
 - Building microservices by using Dapr with minimum effort - *by Gökhan Gökalp*
   - 📓 [Part 1](https://www.gokhan-gokalp.com/en/building-microservices-by-using-dapr-and-net-with-minimum-effort-01) - Develop 2 simple services using a few building blocks of Dapr
   - 📓 [Part 2](https://www.gokhan-gokalp.com/en/building-microservices-by-using-dapr-and-net-with-minimum-effort-02-azure-container-apps) - Using Azure CLI to prepare Dapr components *(CosmosDB, ServiceBus)* and deploy Container App
+- [Debugging Dapr applications with Visual Studio](https://laurentkempe.com/2023/02/27/debugging-dapr-applications-with-rider-or-visual-studio-a-better-way) 📓*Laurent Kempé*
 ---
 - [Bicep](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview) 📚*Microsoft-Learn*
 - [Microsoft.App - ContainerApps](https://learn.microsoft.com/en-us/azure/templates/microsoft.app/containerapps?pivots=deployment-language-bicep) 📚*Microsoft-Learn - Bicep template*
