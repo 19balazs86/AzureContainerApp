@@ -11,6 +11,7 @@ Actually, there is not much code in this repository. I experimented with the [Az
 - [Dapr for .NET Developers](https://learn.microsoft.com/en-us/dotnet/architecture/dapr-for-net-developers) 📚*eBook*
 - [Dapr Service Invocation with Azure Container Apps](https://dev.to/willvelida/dapr-service-invocation-with-azure-container-apps-41p8) 📓*Will Velida - dev.to*
 - [Dapr State Management in Web API](https://dev.to/willvelida/implementing-dapr-state-management-in-aspnet-core-web-apis-42lk) 📓*Will Velida - dev.to*
+- [Dapr the ultimate developer API for microservices](https://youtu.be/74A7YwsmVwM) 📽️*52min - Coding Tech - Kendall Roden - Diagrid (+workflow demo)*
 - [Running your apps on Dapr](https://youtu.be/UoU7DmkXQNI) 📽️*55min - CodingNight*
 - [Series of building gRPC microservice applications with Azure Container Apps and Dapr](https://bitoftech.net/2022/08/25/tutorial-building-microservice-applications-azure-container-apps-dapr) 📓*Taiseer Joudeh*
 - *Geert Baeke*: [Container Apps and Dapr](https://youtu.be/s96io88CM6A) 📽️*30min* [Deploying and scaling Container Apps with Bicep and Keda](https://youtu.be/z_QnOKVpbkA) 📽️*21min*
