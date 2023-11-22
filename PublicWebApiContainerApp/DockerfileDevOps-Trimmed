@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/nightly/runtime-deps:7.0-jammy-chiseled
+FROM mcr.microsoft.com/dotnet/nightly/runtime-deps:8.0-jammy-chiseled
 WORKDIR /app
 EXPOSE 8080
 ENV ASPNETCORE_URLS=http://+:8080
