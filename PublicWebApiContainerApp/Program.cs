@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace PublicWebApiContainerApp;
 
-public class Program
+public static class Program
 {
     public static void Main(string[] args)
     {
@@ -34,7 +34,7 @@ public class Program
 
             app.MapGet("/", () => TypedResults.Redirect("/swagger"));
 
-            app.MapGet("/version", () => $"Current version: {Assembly.GetExecutingAssembly().GetName().Version}");
+            app.MapGet("/version", () => $"Current version: {Assembly.GetExecutingAssembly().GetName().Version?.FormatVersion(2, 3)}");
 
             app.MapGet("/say-hello/{name}", sayHello);
         }
