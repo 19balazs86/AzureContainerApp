@@ -25,6 +25,8 @@ Actually, there is not much code in this repository. I experimented with the [Az
 - [Bicep](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview) 📚*Microsoft-Learn*
 - [Microsoft.App - ContainerApps](https://learn.microsoft.com/en-us/azure/templates/microsoft.app/containerapps?pivots=deployment-language-bicep) 📚*Microsoft-Learn - Bicep template*
 - [Bicep Playground with sample templates](https://bicepdemo.z22.web.core.windows.net)
+---
+- [Set up Aspire dashboard on Container App Environments](https://medium.com/@jornbeyers/tutorial-setting-up-the-net-aspire-dashboard-on-container-app-environments-891faa00c72f) 📓*Jorn Beyers*
 
 ###### The following services are defined in a bicep file
 
