@@ -25,6 +25,7 @@ Actually, there is not much code in this repository. I experimented with the [Az
 ---
 - [Bicep](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview) 📚*Microsoft-Learn*
 - [Microsoft.App - ContainerApps](https://learn.microsoft.com/en-us/azure/templates/microsoft.app/containerapps?pivots=deployment-language-bicep) 📚*Microsoft-Learn - Bicep template*
+- [Define resources with Bicep and ARM templates](https://docs.microsoft.com/en-us/azure/templates) 📚*MS-Learn*
 - [Azure quickstart templates](https://github.com/Azure/azure-quickstart-templates/tree/master/quickstarts) 👤*Azure*
 - [Bicep Playground with sample templates](https://bicepdemo.z22.web.core.windows.net)
 ---
