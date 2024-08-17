@@ -113,13 +113,13 @@ resource echoContainerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
         configuration: {
             ingress: {
                 external: true // For external testing
-                targetPort: 80
+                targetPort: 8080
             }
             dapr: {
                 enabled: true
                 appId: 'echo-server'
                 appProtocol: 'http'
-                appPort: 80
+                appPort: 8080
             }
         }
         template: {
