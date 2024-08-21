@@ -6,6 +6,7 @@ In my other repository, you can find additional [resources about Dapr](https://g
 #### Resources
 
 - [Documentation](https://learn.microsoft.com/en-us/azure/container-apps/overview) 📚*MS-Learn* | [Pricing](https://azure.microsoft.com/en-us/pricing/details/container-apps)
+- [Aspire Dashboard](https://learn.microsoft.com/en-us/azure/container-apps/aspire-dashboard?pivots=portal) | *It uses SSO to login. Assign the role: 'Container Apps ManagedEnvironments Contributor' to the user you use in Azure Portal (the one with your email address)*
   - [Authentication and authorization](https://learn.microsoft.com/en-us/azure/container-apps/authentication) 📚*Microsoft Learn*
     - [Access user claims in application code](https://johnnyreilly.com/azure-container-apps-easy-auth-and-dotnet-authentication) 📓*Johnny Reilly*
 - [.NET Containers advancements in .NET 8](https://youtu.be/scIAwLrruMY) 📽️*25 min - DotNet*
