@@ -88,6 +88,9 @@ stages:
         deploy:
           steps:
 
+          # A better way to do this is with the task: AzureContainerApps
+          # https://learn.microsoft.com/en-us/azure/container-apps/azure-pipelines
+          
           #https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/azure-resource-manager-template-deployment-v3
           - task: AzureResourceManagerTemplateDeployment@3
             inputs:
