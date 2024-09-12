@@ -1,0 +1,79 @@
+﻿# Run number: https://docs.microsoft.com/en-us/azure/devops/pipelines/process/run-number
+name: "$(BuildDefinitionName)_$(Year:yyyy).$(Month).$(DayOfMonth)_$(Rev:rr)"
+
+trigger: none
+
+pool:
+  vmImage: "ubuntu-latest"
+
+variables:
+  scriptsDir: "AzureContainerApp/bicep-scripts"
+  csprojFolder: "AzureContainerApp/WebApi"
+
+stages:
+- stage: BuildAndPushDockerImageStage
+  displayName: 'Build and Push docker image'
+
+  jobs:
+  - job: BuildAndPushJob
+    displayName: 'Build and Push'
+
+    steps:
+      # Generate a sily version number like "yy.M.d.BuildId" and it can be used as $(setvarTask.version)
+      - task: PowerShell@2
+        displayName: "Calculate version"
+        name: setvarTask
+        inputs:
+          filePath: "${{variables.scriptsDir}}/CalculateVersion.ps1"
+          arguments: "-buildId $(Build.BuildId)"
+
+      - script: echo $(setvarTask.version)
+        displayName: "Print version"
+
+      - task: Docker@2
+        displayName: "Docker login"
+        inputs:
+          containerRegistry: 'ContainerAppTestCR-Connection'
+          command: 'login'
+
+      - task: UseDotNet@2
+        inputs:
+          packageType: 'sdk'
+          version: '8.0.401'
+
+      - task: DotNetCoreCLI@2
+        displayName: "dotnet publish"
+        inputs:
+          command: "publish"
+          publishWebProjects: false
+          zipAfterPublish: false
+          workingDirectory: "$(csprojFolder)"
+          arguments: "-t:PublishContainer -p:UseAppHost=false -p:Version=$(setvarTask.version)"
+
+# Stage -> Deploy
+
+- stage: Deploy
+  condition: eq(variables['Build.Reason'], 'Manual')
+
+  jobs:
+  - deployment: Deploy
+    displayName: "Update ContainerApp"
+
+    environment: "Dev"
+
+    variables:
+      version: $[stageDependencies.BuildAndPushDockerImageStage.BuildAndPushJob.outputs['setvarTask.version']]
+
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+
+          - task: AzureCLI@2
+            displayName: "Update image"
+            inputs:
+              azureSubscription: 'MyAzureSubscription'
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                az containerapp update -n "web-api" -g "ContainerAppTest-ResGroup" --image "containerapptestcr.azurecr.io/containerapptestcr/web-api:$(version)"

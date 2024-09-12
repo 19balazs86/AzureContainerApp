@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+
+    <!-- https://learn.microsoft.com/en-us/dotnet/core/docker/publish-as-container -->
+    <!-- Short: dotnet publish -t:PublishContainer -p:UseAppHost=false -->
+    <!-- Long:  dotnet publish -p PublishProfile=DefaultContainer -p:UseAppHost=false -->
+
+    <IsPublishable>true</IsPublishable>
+    <EnableSdkContainerSupport>true</EnableSdkContainerSupport>
+
+    <!--<ContainerRepository>dapr-api</ContainerRepository>-->
+    <ContainerRepository>containerapptestcr/web-api</ContainerRepository>
+    <ContainerImageTags>$(Version);latest</ContainerImageTags>
+    <ContainerRuntimeIdentifier>linux-x64</ContainerRuntimeIdentifier>
+    <ContainerBaseImage>mcr.microsoft.com/dotnet/aspnet:8.0.8-noble-chiseled</ContainerBaseImage>
+
+    <ContainerRegistry>containerapptestcr.azurecr.io</ContainerRegistry>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapr.AspNetCore" Version="1.14.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.3" />
+  </ItemGroup>
+
+</Project>

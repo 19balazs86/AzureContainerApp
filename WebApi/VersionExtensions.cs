@@ -1,4 +1,4 @@
-﻿namespace PublicWebApiContainerApp;
+﻿namespace WebApi;
 
 // Rick Strahl: https://weblog.west-wind.com/posts/2024/Jun/13/C-Version-Formatting
 public static class VersionExtensions

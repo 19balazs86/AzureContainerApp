@@ -8,7 +8,7 @@ pool:
 
 variables:
   scriptsDir: "AzureContainerApp/scripts"
-  csprojFolder: "AzureContainerApp/PublicWebApiContainerApp"
+  csprojFolder: "AzureContainerApp/WebApi"
   publishFolder: $(Agent.TempDirectory)/publish
   bicepFileName: 'update-containerApp.bicep'
 
@@ -46,7 +46,7 @@ stages:
         displayName: Build and Push an image to Azure container registry
         inputs:
           command: buildAndPush
-          repository: "PublicWebApiContainerApp" # In ACR this will be the name of the repository
+          repository: "WebApi" # In ACR this will be the name of the repository
           dockerfile: $(csprojFolder)/DockerfileDevOps
           buildContext: $(publishFolder)
           containerRegistry: "ContainerAppTestACR-Connection"
@@ -90,7 +90,7 @@ stages:
 
           # A better way to do this is with the task: AzureContainerApps
           # https://learn.microsoft.com/en-us/azure/container-apps/azure-pipelines
-          
+
           #https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/azure-resource-manager-template-deployment-v3
           - task: AzureResourceManagerTemplateDeployment@3
             inputs:
